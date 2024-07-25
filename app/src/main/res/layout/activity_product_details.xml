@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+    android:background="@color/white"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="5dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="400dp"
+            android:layout_height="330dp"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:maxLines="2"
+            android:textSize="14dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Product Name"/>
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#BCBBBB"
+            android:maxLines="2"
+            android:textSize="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Product Name"/>
+
+        <TextView
+            android:id="@+id/textViewPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:textColor="#FF9800"
+            android:textSize="14dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Rs 200"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/textViewQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:maxLines="2"
+                android:textSize="14dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Quantity"/>
+            <EditText
+                android:inputType="text"
+                android:layout_weight="1"
+                android:id="@+id/edtQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Quantity"
+                />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/addToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to cart"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+</RelativeLayout>
