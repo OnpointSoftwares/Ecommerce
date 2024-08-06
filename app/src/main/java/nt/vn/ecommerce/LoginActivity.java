@@ -13,6 +13,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import nt.vn.ecommerce.admin.AddProductActivity;
 import nt.vn.ecommerce.admin.AdminProductActivity;
@@ -21,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText editTextEmail, editTextPassword;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         // Initialize Firebase with the custom options
-        FirebaseApp.initializeApp(this, options);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
     }
@@ -50,12 +57,37 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, AddProductActivity.class));
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            checkUserRole(user.getUid());
                         } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void checkUserRole(String userId) {
+        mDatabase.child("users").child(userId).child("role").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String role = dataSnapshot.getValue(String.class);
+                    if ("Admin".equalsIgnoreCase(role)) {
+                        startActivity(new Intent(LoginActivity.this, AdminProductActivity.class));
+                    } else if ("Client".equalsIgnoreCase(role)) {
+                        startActivity(new Intent(LoginActivity.this, ProductListActivity.class));
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Unknown role", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Role not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(LoginActivity.this, "Failed to read role", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

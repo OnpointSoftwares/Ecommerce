@@ -7,7 +7,6 @@ public class Product implements Serializable {
     private String name;
     private double price;
     private String imageUrl;
-
     public Product() {
         // Default constructor required for Firebase
     }
